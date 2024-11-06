@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Generator</title>
+</head>
+<body>
+    <h1>Benvenuti su Quiz Generator</h1>
+    <p>Carica i tuoi file e genera quiz personalizzati basati sui tuoi contenuti!</p>
+    
+    <!-- Sezione per il caricamento dei file -->
+    <form id="uploadForm">
+        <label for="fileInput">Carica il tuo file:</label>
+        <input type="file" id="fileInput" accept=".pdf, .docx">
+        <button type="submit">Genera Quiz</button>
+    </form>
+    
+    <!-- Sezione per visualizzare i quiz generati -->
+    <div id="quizOutput"></div>
+    
+    <script>
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault();
+            alert("Funzionalità di generazione quiz in arrivo!");
+        };
+    </script>
+</body>
+</html>
