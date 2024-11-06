@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Generator</title>
+     <!-- Aggiunta della libreria pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
     <h1>Benvenuti su Quiz Generator</h1>
@@ -25,5 +27,33 @@
             alert("Funzionalità di generazione quiz in arrivo!");
         };
     </script>
+     // Funzione per leggere il file PDF
+    function extractTextFromPDF(file) {
+        const reader = new FileReader();  // Usato per leggere il file
+        reader.onload = function(e) {
+            const pdfData = e.target.result;
+            pdfjsLib.getDocument(pdfData).promise.then(function(pdf) {
+                pdf.getPage(1).then(function(page) {  // Leggiamo la prima pagina del PDF
+                    page.getTextContent().then(function(textContent) {
+                        const text = textContent.items.map(item => item.str).join(' ');  // Uniamo il testo estratto
+                        console.log(text);  // Mostriamo il testo nella console per il debug
+                    });
+                });
+            });
+        };
+        reader.readAsArrayBuffer(file);  // Leggiamo il file PDF
+    }
+
+    // Gestiamo il caricamento del file
+    document.getElementById('uploadForm').onsubmit = function(event) {
+        event.preventDefault();  // Evita che la pagina si ricarichi
+        const file = document.getElementById('fileInput').files[0];  // Otteniamo il file caricato
+        if (file.type === 'application/pdf') {
+            extractTextFromPDF(file);  // Estraiamo il testo dal PDF
+        } else {
+            alert("Solo file PDF supportati per ora.");
+        }
+    };
+</script>
 </body>
 </html>
