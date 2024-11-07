@@ -1,3 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Generator</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Aggiunta della libreria pdf.js per leggere i PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center">Benvenuti su Quiz Generator</h1>
+        <p class="text-center">Carica il tuo file PDF e genera un quiz!</p>
+
+        <!-- Form per caricare il file -->
+        <div class="d-flex justify-content-center">
+            <form id="uploadForm" class="form-inline">
+                <label for="fileInput" class="mr-2">Carica il tuo file:</label>
+                <input type="file" id="fileInput" accept=".pdf" class="form-control mr-2">
+                <button type="submit" class="btn btn-primary">Genera Quiz</button>
+            </form>
+        </div>
+
+        <!-- Area per visualizzare il testo estratto dal PDF -->
+        <div id="quizOutput" class="mt-4 p-3 bg-white border rounded"></div>
+    </div>
+
+    <script>
+        // Funzione per leggere il file PDF
+        function extractTextFromPDF(file) {
+            const reader = new FileReader();  
+            reader.onload = function(e) {
+                const pdfData = e.target.result;
+                pdfjsLib.getDocument(pdfData).promise.then(function(pdf) {
+                    pdf.getPage(1).then(function(page) {
+                        page.getTextContent().then(function(textContent) {
+                            const text = textContent.items.map(item => item.str).join(' ');
+                            console.log(text); 
+                            document.getElementById("quizOutput").innerText = text;
+                        });
+                    });
+                });
+            };
+            reader.readAsArrayBuffer(file);  
+        }
+
+        // Gestisci il caricamento del file
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault(); 
+            const file = document.getElementById('fileInput').files[0];  
+            if (file && file.type === 'application/pdf') {
+                extractTextFromPDF(file);  
+            } else {
+                alert("Per favore carica un file PDF.");
+            }
+        };
+    </script>
+</body>
+</html>
 
 <!DOCTYPE html>
 <html lang="it">
